@@ -947,6 +947,7 @@ public class OperatorBoardTracker extends SubsystemBase implements AutoCloseable
     recordPublish(topic, 1);
   }
 
+  @SuppressWarnings("unused")
   private void trackPublish(String topic, double value) {
     recordPublish(topic, 8);
   }
@@ -1285,6 +1286,8 @@ public class OperatorBoardTracker extends SubsystemBase implements AutoCloseable
     private double peakPublishesPerSec = 0.0;
     private double peakBytesPerSec = 0.0;
     private int lastPayloadBytes = 0;
+
+    @SuppressWarnings("unused")
     private double lastPublishTimestampSec = Double.NEGATIVE_INFINITY;
 
     private PublishTopicAccumulator(String topic) {

@@ -94,6 +94,7 @@ public final class OperatorBoardPersistence {
 
   public synchronized OperatorBoardDataModels.StorageInventoryDocument buildStorageInventory() {
     initialize();
+    @SuppressWarnings("unused")
     String runtimePath = runtimeRoot.toString();
     String robotPath = "/home/lvuser/operatorboard-data";
     String deployPath = deployDefaultsRoot.toString();

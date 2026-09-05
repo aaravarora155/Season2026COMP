@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.Griffins1884.frc2026.mechanisms.RobotMechanismDefinitions;
 import org.Griffins1884.frc2026.mechanisms.rollers.VoltageRollerMechanism;
-import org.Griffins1884.frc2026.mechanisms.rollers.VoltageRollerMechanism.VoltageGoal;
 import org.Griffins1884.frc2026.util.LoggedTunableNumber;
 
 @Setter
@@ -14,7 +13,7 @@ import org.Griffins1884.frc2026.util.LoggedTunableNumber;
 public class IntakeSubsystem extends VoltageRollerMechanism<IntakeSubsystem.IntakeGoal> {
   @RequiredArgsConstructor
   @Getter
-  public enum IntakeGoal implements VoltageGoal {
+  public enum IntakeGoal implements VoltageRollerMechanism.VoltageGoal {
     IDLING(() -> 0.0), // Intake is off
     FORWARD(() -> IntakeConstants.FORWARD_RPM.get()), // Maximum forward velocity
     REVERSE(() -> IntakeConstants.REVERSE_RPM.get()), // Maximum reverse velocity

@@ -20,6 +20,7 @@ import org.Griffins1884.frc2026.util.ShotMath;
 import org.Griffins1884.frc2026.util.TurretUtil;
 import org.littletonrobotics.junction.Logger;
 
+@SuppressWarnings("unused")
 public final class TurretCommands {
   private TurretCommands() {}
 

@@ -25,7 +25,7 @@ import org.Griffins1884.frc2026.util.LoggedTunableNumber;
  */
 public final class GlobalConstants {
   public static final RobotMode MODE = RobotMode.REAL;
-  public static final RobotType ROBOT = RobotType.ECLAIR;
+  public static final RobotType ROBOT = RobotType.COMPBOT;
   public static final LoggingMode LOGGING_MODE = LoggingMode.COMP;
   public static final double ODOMETRY_FREQUENCY = 250.0;
 
@@ -42,8 +42,6 @@ public final class GlobalConstants {
 
   public static enum RobotType {
     COMPBOT,
-    DBOT,
-    ECLAIR,
     SIMBOT
   }
 
@@ -66,8 +64,10 @@ public final class GlobalConstants {
    */
   public static void main(String... args) {
     if (ROBOT == RobotType.SIMBOT) {
-      new Alert("SIM robot loaded in REAL mode, gains likely breaking!", AlertType.kWarning)
-          .set(true);
+      Alert realModeAlert =
+          new Alert("SIM robot loaded in REAL mode, gains likely breaking!", AlertType.kWarning);
+      realModeAlert.set(true);
+      realModeAlert.close();
     }
   }
 

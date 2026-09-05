@@ -82,6 +82,7 @@ public class Superstructure extends SubsystemBase {
   @Setter private boolean shooterPivotExternalControl = false;
   private DoubleSupplier manualTurretAxis = () -> 0.0;
   private DoubleSupplier manualPivotAxis = () -> 0.0;
+  @SuppressWarnings("unused")
   private Supplier<Optional<Pose2d>> autoStartPoseSupplier = Optional::empty;
 
   private final Debouncer ballPresentDebouncer =
@@ -250,10 +251,6 @@ public class Superstructure extends SubsystemBase {
         lastShooterPivotPosition,
         lastTurretAction,
         lastTurretTarget);
-  }
-
-  private Optional<Pose2d> getAutoStartPose() {
-    return autoStartPoseSupplier.get();
   }
 
   @Override
@@ -881,13 +878,6 @@ public class Superstructure extends SubsystemBase {
     return vector;
   }
 
-  private static boolean isValidPose(Pose2d pose) {
-    return pose != null
-        && Double.isFinite(pose.getX())
-        && Double.isFinite(pose.getY())
-        && Double.isFinite(pose.getRotation().getRadians());
-  }
-
   public boolean isInAllianceZone() {
     if (drive == null) {
       return false;
@@ -960,10 +950,6 @@ public class Superstructure extends SubsystemBase {
     return pose.getX() <= GlobalConstants.FieldConstants.fieldLength * 0.5
         ? DriverStation.Alliance.Blue
         : DriverStation.Alliance.Red;
-  }
-
-  private boolean isBallSenseAvailable() {
-    return rollers.indexer != null || rollers.shooter != null || rollers.intake != null;
   }
 
   private boolean isBallPresent() {

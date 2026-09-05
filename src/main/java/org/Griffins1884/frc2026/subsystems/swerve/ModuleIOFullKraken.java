@@ -41,6 +41,8 @@ public class ModuleIOFullKraken implements ModuleIO {
   private final Rotation2d encoderOffset;
   private final boolean hasCancoder;
   private final String calibrationKey;
+
+  @SuppressWarnings("unused")
   private static final double RADIANS_PER_ROTATION = TWO_PI;
   private double softwareZeroTrimRotations;
 
@@ -49,6 +51,7 @@ public class ModuleIOFullKraken implements ModuleIO {
   private static final Executor brakeModeExecutor = Executors.newFixedThreadPool(8);
 
   // Control requests
+  @SuppressWarnings("unused")
   private final TorqueCurrentFOC torqueCurrentRequest = new TorqueCurrentFOC(0).withUpdateFreqHz(0);
   private final VoltageOut voltageRequest = new VoltageOut(0.0).withUpdateFreqHz(0);
   private final PositionTorqueCurrentFOC positionTorqueCurrentRequest =

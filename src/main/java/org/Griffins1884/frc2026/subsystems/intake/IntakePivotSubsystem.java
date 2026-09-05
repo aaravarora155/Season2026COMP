@@ -261,11 +261,6 @@ public class IntakePivotSubsystem extends SubsystemBase {
     Logger.recordOutput("IntakePivot/Sync/SecondaryGoalRad", secondaryGoal);
   }
 
-  private void setOpenLoopInternal(double percent) {
-    primary.setOpenLoop(percent);
-    secondary.setOpenLoop(percent);
-  }
-
   private void stopOpenLoopInternal() {
     primary.stopOpenLoop();
     secondary.stopOpenLoop();
@@ -294,9 +289,7 @@ public class IntakePivotSubsystem extends SubsystemBase {
     boolean detected;
     if (!primaryConfigured && !secondaryConfigured) {
       detected = false;
-    } else if (IntakePivotConstants.ZERO_LIMIT_SWITCH_REQUIRE_BOTH
-        && primaryConfigured
-        && secondaryConfigured) {
+    } else if (primaryConfigured && secondaryConfigured && IntakePivotConstants.ZERO_LIMIT_SWITCH_REQUIRE_BOTH) {
       detected = primaryPressed && secondaryPressed;
     } else {
       detected = primaryPressed || secondaryPressed;

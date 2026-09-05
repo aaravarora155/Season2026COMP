@@ -1,6 +1,7 @@
 package org.Griffins1884.frc2026.subsystems.shooter;
 
 import com.ctre.phoenix6.CANBus;
+import org.Griffins1884.frc2026.CanIDConstants;
 import org.Griffins1884.frc2026.GlobalConstants;
 import org.Griffins1884.frc2026.mechanisms.MechanismDefinition;
 import org.Griffins1884.frc2026.util.LoggedTunableNumber;
@@ -13,7 +14,7 @@ public final class ShooterConstants {
 
   public static final CANBus CAN_BUS = new CANBus("rio");
 
-  public static final int[] SHOOTER_IDS = {22, 23};
+  public static final int[] SHOOTER_IDS = CanIDConstants.SHOOTER_IDS;
   public static final boolean[] SHOOTER_INVERTED = {false, true};
   public static final int CURRENT_LIMIT_AMPS = 40;
   public static final double CLOSED_LOOP_RAMP_SECONDS = 0.01;

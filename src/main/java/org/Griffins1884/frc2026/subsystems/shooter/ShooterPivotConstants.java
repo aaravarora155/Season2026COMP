@@ -1,6 +1,7 @@
 package org.Griffins1884.frc2026.subsystems.shooter;
 
 import com.ctre.phoenix6.CANBus;
+import org.Griffins1884.frc2026.CanIDConstants;
 import org.Griffins1884.frc2026.GlobalConstants;
 import org.Griffins1884.frc2026.mechanisms.MechanismDefinition;
 import org.Griffins1884.frc2026.util.LoggedTunableNumber;
@@ -14,7 +15,7 @@ public final class ShooterPivotConstants {
   }
 
   public static final MotorController MOTOR_CONTROLLER = MotorController.KRAKEN_X40;
-  public static final int[] MOTOR_ID = {24};
+  public static final int[] MOTOR_ID = CanIDConstants.SHOOTER_PIVOT_IDS;
   public static final boolean[] INVERTED = {false};
   public static final CANBus CAN_BUS = new CANBus("rio");
   public static final int CURRENT_LIMIT_AMPS = 40;

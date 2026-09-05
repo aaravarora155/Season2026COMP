@@ -13,13 +13,14 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
+import org.Griffins1884.frc2026.CanIDConstants;
 import org.Griffins1884.frc2026.GlobalConstants.Gains;
-import org.Griffins1884.frc2026.GlobalConstants.RobotType;
 import org.Griffins1884.frc2026.util.swerve.ModuleLimits;
 import org.ironmaple.simulation.drivesims.COTS;
 import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 
+@SuppressWarnings("unused")
 public final class SwerveConstants {
   // Gyro
   public static enum GyroType {
@@ -37,29 +38,25 @@ public final class SwerveConstants {
   /** Meters */
   public static final double TRACK_WIDTH =
       switch (ROBOT) {
-        case ECLAIR -> Units.inchesToMeters(13.0);
-        case COMPBOT, DBOT, SIMBOT -> Units.inchesToMeters(27.5);
+        case COMPBOT, SIMBOT -> Units.inchesToMeters(27.5);
       };
 
   /** Meters */
   public static final double WHEEL_BASE =
       switch (ROBOT) {
-        case ECLAIR -> Units.inchesToMeters(42.0);
-        case COMPBOT, DBOT, SIMBOT -> Units.inchesToMeters(27.5);
+        case COMPBOT, SIMBOT -> Units.inchesToMeters(27.5);
       };
 
   /** Meters */
   public static final double BUMPER_LENGTH =
       switch (ROBOT) {
-        case ECLAIR -> Units.inchesToMeters(19.5);
-        case COMPBOT, DBOT, SIMBOT -> Units.inchesToMeters(34.0);
+        case COMPBOT, SIMBOT -> Units.inchesToMeters(34.0);
       };
 
   /** Meters */
   public static final double BUMPER_WIDTH =
       switch (ROBOT) {
-        case ECLAIR -> Units.inchesToMeters(48.5);
-        case COMPBOT, DBOT, SIMBOT -> Units.inchesToMeters(34.0);
+        case COMPBOT, SIMBOT -> Units.inchesToMeters(34.0);
       };
 
   public static final Translation2d[] MODULE_TRANSLATIONS =
@@ -90,87 +87,19 @@ public final class SwerveConstants {
       boolean turnInverted,
       boolean encoderInverted) {}
 
-  // TODO: Replace all ECLAIR CAN IDs with the real hardware assignments.
-  private static final int ECLAIR_PIGEON_ID = 60;
-  private static final int ECLAIR_FRD_ID = 11;
-  private static final int ECLAIR_FRR_ID = 10;
-  private static final int ECLAIR_FRR_CANCODER_ID = 3;
-  private static final int ECLAIR_FLD_ID = 13;
-  private static final int ECLAIR_FLR_ID = 12;
-  private static final int ECLAIR_FLR_CANCODER_ID = 4;
-  private static final int ECLAIR_BRD_ID = 16;
-  private static final int ECLAIR_BRR_ID = 17;
-  private static final int ECLAIR_BRR_CANCODER_ID = 6;
-  private static final int ECLAIR_BLD_ID = 14;
-  private static final int ECLAIR_BLR_ID = 15;
-  private static final int ECLAIR_BLR_CANCODER_ID = 5;
-
-  static final int PIGEON_ID =
-      switch (ROBOT) {
-        case COMPBOT, DBOT, SIMBOT -> 60;
-        case ECLAIR -> ECLAIR_PIGEON_ID;
-      };
-  ;
-  private static final int FRD_ID =
-      switch (ROBOT) {
-        case COMPBOT, DBOT, SIMBOT -> 13;
-        case ECLAIR -> ECLAIR_FRD_ID;
-      };
-  private static final int FRR_ID =
-      switch (ROBOT) {
-        case COMPBOT, DBOT, SIMBOT -> 12;
-        case ECLAIR -> ECLAIR_FRR_ID;
-      };
-  private static final int FRR_CANCODER_ID =
-      switch (ROBOT) {
-        case COMPBOT, DBOT, SIMBOT -> 4;
-        case ECLAIR -> ECLAIR_FRR_CANCODER_ID;
-      };
-  private static final int FLD_ID =
-      switch (ROBOT) {
-        case COMPBOT, DBOT, SIMBOT -> 11;
-        case ECLAIR -> ECLAIR_FLD_ID;
-      };
-  private static final int FLR_ID =
-      switch (ROBOT) {
-        case COMPBOT, DBOT, SIMBOT -> 10;
-        case ECLAIR -> ECLAIR_FLR_ID;
-      };
-  private static final int FLR_CANCODER_ID =
-      switch (ROBOT) {
-        case COMPBOT, DBOT, SIMBOT -> 3;
-        case ECLAIR -> ECLAIR_FLR_CANCODER_ID;
-      };
-  private static final int BRD_ID =
-      switch (ROBOT) {
-        case COMPBOT, DBOT, SIMBOT -> 14;
-        case ECLAIR -> ECLAIR_BRD_ID;
-      };
-  private static final int BRR_ID =
-      switch (ROBOT) {
-        case COMPBOT, DBOT, SIMBOT -> 15;
-        case ECLAIR -> ECLAIR_BRR_ID;
-      };
-  private static final int BRR_CANCODER_ID =
-      switch (ROBOT) {
-        case COMPBOT, DBOT, SIMBOT -> 5;
-        case ECLAIR -> ECLAIR_BRR_CANCODER_ID;
-      };
-  private static final int BLD_ID =
-      switch (ROBOT) {
-        case COMPBOT, DBOT, SIMBOT -> 16;
-        case ECLAIR -> ECLAIR_BLD_ID;
-      };
-  private static final int BLR_ID =
-      switch (ROBOT) {
-        case COMPBOT, DBOT, SIMBOT -> 17;
-        case ECLAIR -> ECLAIR_BLR_ID;
-      };
-  private static final int BLR_CANCODER_ID =
-      switch (ROBOT) {
-        case COMPBOT, DBOT, SIMBOT -> 6;
-        case ECLAIR -> ECLAIR_BLR_CANCODER_ID;
-      };
+  static final int PIGEON_ID = CanIDConstants.PIGEON_ID;
+  private static final int FRD_ID = CanIDConstants.FRD_ID;
+  private static final int FRR_ID = CanIDConstants.FRR_ID;
+  private static final int FRR_CANCODER_ID = CanIDConstants.FRR_CANCODER_ID;
+  private static final int FLD_ID = CanIDConstants.FLD_ID;
+  private static final int FLR_ID = CanIDConstants.FLR_ID;
+  private static final int FLR_CANCODER_ID = CanIDConstants.FLR_CANCODER_ID;
+  private static final int BRD_ID = CanIDConstants.BRD_ID;
+  private static final int BRR_ID = CanIDConstants.BRR_ID;
+  private static final int BRR_CANCODER_ID = CanIDConstants.BRR_CANCODER_ID;
+  private static final int BLD_ID = CanIDConstants.BLD_ID;
+  private static final int BLR_ID = CanIDConstants.BLR_ID;
+  private static final int BLR_CANCODER_ID = CanIDConstants.BLR_CANCODER_ID;
 
   // Zeroed rotation values for each module, see setup instructions
   private static final Rotation2d COMPBOT_FLR_ZERO =
@@ -181,35 +110,21 @@ public final class SwerveConstants {
   private static final Rotation2d COMPBOT_BRR_ZERO =
       Rotation2d.fromRadians(-0.290283203125 * (2 * PI));
 
-  // TODO: Measure the absolute encoder zero offsets for ECLAIR.
-  private static final Rotation2d ECLAIR_FLR_ZERO =
-      Rotation2d.fromRadians(0.08154296875 * (2 * PI));
-  private static final Rotation2d ECLAIR_FRR_ZERO =
-      Rotation2d.fromRadians(-0.2451171875 * (2 * PI));
-  private static final Rotation2d ECLAIR_BLR_ZERO =
-      Rotation2d.fromRadians(0.297607421875 * (2 * PI));
-  private static final Rotation2d ECLAIR_BRR_ZERO =
-      Rotation2d.fromRadians(0.43006640625 * (2 * PI));
-
   private static final Rotation2d FLR_ZERO =
       switch (ROBOT) {
-        case ECLAIR -> ECLAIR_FLR_ZERO;
-        case COMPBOT, DBOT, SIMBOT -> COMPBOT_FLR_ZERO;
+        case COMPBOT, SIMBOT -> COMPBOT_FLR_ZERO;
       };
   private static final Rotation2d FRR_ZERO =
       switch (ROBOT) {
-        case ECLAIR -> ECLAIR_FRR_ZERO;
-        case COMPBOT, DBOT, SIMBOT -> COMPBOT_FRR_ZERO;
+        case COMPBOT, SIMBOT -> COMPBOT_FRR_ZERO;
       };
   private static final Rotation2d BLR_ZERO =
       switch (ROBOT) {
-        case ECLAIR -> ECLAIR_BLR_ZERO;
-        case COMPBOT, DBOT, SIMBOT -> COMPBOT_BLR_ZERO;
+        case COMPBOT, SIMBOT -> COMPBOT_BLR_ZERO;
       };
   private static final Rotation2d BRR_ZERO =
       switch (ROBOT) {
-        case ECLAIR -> ECLAIR_BRR_ZERO;
-        case COMPBOT, DBOT, SIMBOT -> COMPBOT_BRR_ZERO;
+        case COMPBOT, SIMBOT -> COMPBOT_BRR_ZERO;
       };
 
   // Inverted encoders or turn motors
@@ -222,7 +137,8 @@ public final class SwerveConstants {
   private static final boolean BRR_INVERTED = false;
   private static final boolean BRR_ENCODER_INVERTED = false;
 
-  // Constants for each module. Add the CANCoder id between the rotator id and offset params
+  // Constants for each module. Add the CANCoder id between the rotator id and
+  // offset params
   public static final ModuleConstants FRONT_LEFT =
       new ModuleConstants(
           "Front Left",
@@ -266,8 +182,7 @@ public final class SwerveConstants {
   /** Wheel rotations induced per full steering rotation at the motor sensor. */
   public static final double KRAKEN_STEER_DRIVE_COUPLING_RATIO = 4.5;
 
-  public static final double THEORETICAL_MAX_LINEAR_SPEED =
-      ROBOT == RobotType.ECLAIR ? Units.feetToMeters(16.8) : 5.3;
+  public static final double THEORETICAL_MAX_LINEAR_SPEED = 5.3;
 
   /** Meters per second */
   public static final double MAX_LINEAR_SPEED = THEORETICAL_MAX_LINEAR_SPEED * 0.85;
@@ -288,10 +203,7 @@ public final class SwerveConstants {
   public static final double ROBOT_MASS = Units.lbsToKilograms(135.0);
 
   /** Kilograms per square meter */
-  public static final double ROBOT_INERTIA =
-      ROBOT == RobotType.ECLAIR
-          ? ROBOT_MASS * (BUMPER_LENGTH * BUMPER_LENGTH + BUMPER_WIDTH * BUMPER_WIDTH) / 12
-          : 6.883;
+  public static final double ROBOT_INERTIA = 6.883;
 
   // Drive motor configuration
   public static final DCMotor DRIVE_GEARBOX = DCMotor.getKrakenX60Foc(1);
@@ -312,14 +224,13 @@ public final class SwerveConstants {
   // Drive motor PID configuration
   static final Gains DRIVE_MOTOR_GAINS =
       switch (ROBOT) {
-        case COMPBOT, DBOT, ECLAIR ->
-            new Gains("Swerve/DriveMotor/Compbot", 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0);
+        case COMPBOT -> new Gains("Swerve/DriveMotor/Compbot", 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0);
         case SIMBOT -> new Gains("Swerve/DriveMotor/Simbot", 0.05, 0.0, 0.0, 0.0, 0.0789, 0.0, 0.0);
       };
   // Torque-current gains for Kraken FOC (amps-based, per-radian units)
   static final Gains KRAKEN_DRIVE_TORQUE_GAINS =
       switch (ROBOT) {
-        case COMPBOT, DBOT, ECLAIR ->
+        case COMPBOT ->
             new Gains("Swerve/KrakenDriveTorque/Compbot", 45.0, 0.0, 0.0, 5.0, 0.4, 0.0, 0.0);
         case SIMBOT ->
             new Gains("Swerve/KrakenDriveTorque/Simbot", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
@@ -346,14 +257,13 @@ public final class SwerveConstants {
   // Rotator PID configuration
   static final Gains ROTATOR_GAINS =
       switch (ROBOT) {
-        case COMPBOT, DBOT, ECLAIR -> new Gains("Swerve/Rotator/Compbot", 2.0, 0.0, 0.0);
+        case COMPBOT -> new Gains("Swerve/Rotator/Compbot", 2.0, 0.0, 0.0);
         case SIMBOT -> new Gains("Swerve/Rotator/Simbot", 12.0, 0.0, 0.2);
       };
   // Torque-current gains for Kraken turn control (amps-based, per-radian units)
   static final Gains KRAKEN_TURN_TORQUE_GAINS =
       switch (ROBOT) {
-        case COMPBOT, DBOT, ECLAIR ->
-            new Gains("Swerve/KrakenTurnTorque/Compbot", 8000.0, 0.0, 50.0);
+        case COMPBOT -> new Gains("Swerve/KrakenTurnTorque/Compbot", 8000.0, 0.0, 50.0);
         case SIMBOT -> new Gains("Swerve/KrakenTurnTorque/Simbot", 0.0, 0.0, 0.0);
       };
 
@@ -388,6 +298,7 @@ public final class SwerveConstants {
   public static final ModuleLimits KRAKEN_MODULE_LIMITS_FREE =
       new ModuleLimits(MAX_LINEAR_SPEED, MAX_LINEAR_ACCELERATION, MAX_STEERING_VELOCITY);
 
+  @SuppressWarnings("unchecked")
   public static final DriveTrainSimulationConfig MAPLE_SIM_CONFIG =
       new DriveTrainSimulationConfig(
           Kilograms.of(ROBOT_MASS),

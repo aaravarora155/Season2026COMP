@@ -2,6 +2,8 @@ package org.Griffins1884.frc2026.util;
 
 public class StateGraph<V extends Enum<V>, T extends Transition<? extends Enum<V>>> {
   private final Object[][] adjacencyMap;
+  
+  @SuppressWarnings("unused")
   private final Class<V> statesEnum;
 
   public StateGraph(Class<V> statesEnum) {
@@ -11,6 +13,7 @@ public class StateGraph<V extends Enum<V>, T extends Transition<? extends Enum<V
     adjacencyMap = new Object[c][c];
   }
 
+  @SuppressWarnings("unchecked")
   private T getEdge(int s, int e) {
     return (T) adjacencyMap[s][e];
   }

@@ -2,7 +2,6 @@ package org.Griffins1884.frc2026.subsystems.intake;
 
 import com.ctre.phoenix6.CANBus;
 import org.Griffins1884.frc2026.GlobalConstants;
-import org.Griffins1884.frc2026.GlobalConstants.RobotType;
 import org.Griffins1884.frc2026.mechanisms.MechanismDefinition;
 import org.Griffins1884.frc2026.util.LoggedTunableNumber;
 
@@ -37,26 +36,20 @@ public final class IntakePivotConstants {
   public static final int PRIMARY_ZERO_LIMIT_SWITCH_DIO_CHANNEL = -1;
   public static final int SECONDARY_ZERO_LIMIT_SWITCH_DIO_CHANNEL = -1;
   public static final boolean ZERO_LIMIT_SWITCH_ACTIVE_LOW = true;
-  public static final boolean ZERO_LIMIT_SWITCH_REQUIRE_BOTH = false;
+  public static final boolean ZERO_LIMIT_SWITCH_REQUIRE_BOTH = true;
 
   public static final double FORWARD_LIMIT = 5.0;
   public static final double REVERSE_LIMIT = -50.0;
   public static final double POSITION_COEFFICIENT = 1.0;
   public static final LoggedTunableNumber MOTION_MAGIC_CRUISE_VEL =
-      new LoggedTunableNumber(
-          "IntakePivot/MotionMagic/CruiseVel",
-          (GlobalConstants.ROBOT != RobotType.DBOT) ? 14.0 : 40);
+      new LoggedTunableNumber("IntakePivot/MotionMagic/CruiseVel", 40);
   public static final LoggedTunableNumber MOTION_MAGIC_ACCEL =
-      new LoggedTunableNumber(
-          "IntakePivot/MotionMagic/Accel", (GlobalConstants.ROBOT != RobotType.DBOT) ? 28.0 : 80);
+      new LoggedTunableNumber("IntakePivot/MotionMagic/Accel", 80);
   public static final LoggedTunableNumber MOTION_MAGIC_JERK =
-      new LoggedTunableNumber(
-          "IntakePivot/MotionMagic/Jerk", (GlobalConstants.ROBOT != RobotType.DBOT) ? 120.0 : 500);
+      new LoggedTunableNumber("IntakePivot/MotionMagic/Jerk", 500);
 
   public static final GlobalConstants.Gains GAINS =
-      (GlobalConstants.ROBOT != RobotType.DBOT)
-          ? new GlobalConstants.Gains("IntakePivot/Gains", 450.0, 55.0, 60.0, 0.0, 0., 0.0, 3)
-          : new GlobalConstants.Gains("IntakePivot/Gains", 3000, 80, 40, 0.0, 0.0, 0.0, 3);
+      new GlobalConstants.Gains("IntakePivot/Gains", 3000, 80, 40, 0.0, 0.0, 0.0, 3);
 
   public static final double POSITION_TOLERANCE = 0.0;
   public static final boolean SOFT_LIMITS_ENABLED = false;
@@ -67,8 +60,7 @@ public final class IntakePivotConstants {
   public static final LoggedTunableNumber IDLE_ANGLE_RAD =
       new LoggedTunableNumber("IntakePivot/IDLE_RAD", -1);
   public static final LoggedTunableNumber PICKUP_RAD =
-      new LoggedTunableNumber(
-          "IntakePivot/PICKUP_RAD", (GlobalConstants.ROBOT != RobotType.DBOT) ? -11 : -14);
+      new LoggedTunableNumber("IntakePivot/PICKUP_RAD", -14);
   public static final LoggedTunableNumber HARDSTOP_STOW_SEEK_POSITION =
       new LoggedTunableNumber("IntakePivot/HardStop/StowSeekPosition", 100.0);
   public static final LoggedTunableNumber HARDSTOP_STOW_CURRENT_AMPS =

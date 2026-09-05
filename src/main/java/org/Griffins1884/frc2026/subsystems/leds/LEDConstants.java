@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.util.Color;
 
 public final class LEDConstants {
   public static final int LED_PORT = 0;
+  @SuppressWarnings("unused")
   private static final Distance LED_SPACING = Meters.of(1 / 60.0); // 60 LEDs per meter
   public static int LED_LENGTH;
 

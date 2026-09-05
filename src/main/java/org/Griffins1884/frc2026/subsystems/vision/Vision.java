@@ -383,6 +383,7 @@ public class Vision extends SubsystemBase implements VisionTargetProvider {
         new VisionFieldPoseEstimate(fieldToRobot, timestampSeconds, visionStdDevs, tagCount));
   }
 
+  @SuppressWarnings("unused")
   private VisionFieldPoseEstimate fuseEstimates(
       VisionFieldPoseEstimate a, VisionFieldPoseEstimate b) {
     if (poseHistory == null) {

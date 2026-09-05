@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.Griffins1884.frc2026.mechanisms.RobotMechanismDefinitions;
 import org.Griffins1884.frc2026.mechanisms.rollers.VelocityRollerMechanism;
-import org.Griffins1884.frc2026.mechanisms.rollers.VelocityRollerMechanism.VelocityGoal;
 import org.Griffins1884.frc2026.util.LoggedTunableNumber;
 
 @Setter
@@ -14,7 +13,7 @@ import org.Griffins1884.frc2026.util.LoggedTunableNumber;
 public class IndexerSubsystem extends VelocityRollerMechanism<IndexerSubsystem.IndexerGoal> {
   @RequiredArgsConstructor
   @Getter
-  public enum IndexerGoal implements VelocityGoal {
+  public enum IndexerGoal implements VelocityRollerMechanism.VelocityGoal {
     IDLING(() -> 0.0),
     FORWARD(() -> IndexerConstants.FORWARD_RPM.get()),
     REVERSE(() -> IndexerConstants.REVERSE_RPM.get()),

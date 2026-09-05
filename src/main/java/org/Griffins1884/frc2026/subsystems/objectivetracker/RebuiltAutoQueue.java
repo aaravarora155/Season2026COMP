@@ -477,6 +477,7 @@ final class RebuiltAutoQueue {
     activeCommand = null;
   }
 
+  @SuppressWarnings("unused")
   private Command buildCommand(QueueStep step) {
     return buildCommand(step, queueSteps.size() <= 1, getRuntimeStepStartPose());
   }

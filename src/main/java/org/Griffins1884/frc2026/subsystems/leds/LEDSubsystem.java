@@ -30,7 +30,7 @@ public class LEDSubsystem extends SubsystemBase {
   }
 
   public Command whiteFlash() {
-    return set(-1); // TODO - change
+    return set(0.25);
   }
 
   public Command rainbow() {
