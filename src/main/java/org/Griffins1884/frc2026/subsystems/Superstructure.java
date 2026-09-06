@@ -474,6 +474,7 @@ public class Superstructure extends SubsystemBase {
     setIndexerGoal(indexerActive ? IndexerGoal.FORWARD : IndexerGoal.IDLING);
   }
 
+  @SuppressWarnings("unused")
   private boolean shouldEnableIndexer(boolean indexerRequested, boolean shooterShouldSpin) {
     turretReadyForFeed = isTurretWithinFeedTolerance();
     if (!indexerRequested) {

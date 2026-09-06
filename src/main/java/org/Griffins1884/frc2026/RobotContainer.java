@@ -3,7 +3,6 @@ package org.Griffins1884.frc2026;
 import static org.Griffins1884.frc2026.Config.Controllers.getDriverController;
 import static org.Griffins1884.frc2026.Config.Subsystems.AUTONOMOUS_ENABLED;
 import static org.Griffins1884.frc2026.Config.Subsystems.DRIVETRAIN_ENABLED;
-import static org.Griffins1884.frc2026.Config.Subsystems.INTAKE_ENABLED;
 import static org.Griffins1884.frc2026.Config.Subsystems.LEDS_ENABLED;
 import static org.Griffins1884.frc2026.Config.Subsystems.SHOOTER_PIVOT_ENABLED;
 import static org.Griffins1884.frc2026.Config.Subsystems.TURRET_ENABLED;
@@ -42,9 +41,6 @@ import org.Griffins1884.frc2026.simulation.maple.MapleArenaSetup;
 import org.Griffins1884.frc2026.simulation.maple.Rebuilt2026FieldModel;
 import org.Griffins1884.frc2026.simulation.visualization.RobotStateVisualizer;
 import org.Griffins1884.frc2026.subsystems.Superstructure;
-import org.Griffins1884.frc2026.subsystems.intake.IntakeIO;
-import org.Griffins1884.frc2026.subsystems.intake.IntakeIOKraken;
-import org.Griffins1884.frc2026.subsystems.intake.IntakeSubsystem;
 import org.Griffins1884.frc2026.subsystems.leds.LEDSubsystem;
 import org.Griffins1884.frc2026.subsystems.objectivetracker.OperatorBoardIOServer;
 import org.Griffins1884.frc2026.subsystems.objectivetracker.OperatorBoardTracker;
@@ -86,7 +82,6 @@ public class RobotContainer {
   private final TurretSubsystem turret;
   private final ShooterPivotSubsystem shooterPivot;
   private final OperatorBoardTracker operatorBoard;
-  private final IntakeSubsystem intake;
 
   // Controller
   private final DriverMap driver = getDriverController();
@@ -101,7 +96,6 @@ public class RobotContainer {
   private boolean autoAllianceZeroed = false;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  @SuppressWarnings("unused")
   public RobotContainer() {
     // Validate the declarative mechanism catalog up front so config errors fail early.
     RobotMechanismDefinitions.all();
@@ -173,17 +167,6 @@ public class RobotContainer {
     } else {
       drive = null;
       superstructure = new Superstructure(null);
-    }
-
-    if (INTAKE_ENABLED) {
-      intake =
-          switch (MODE) {
-            case REAL -> new IntakeSubsystem("Intake", new IntakeIOKraken());
-            case SIM -> new IntakeSubsystem("Intake", new IntakeIOKraken());
-            default -> new IntakeSubsystem("Intake", new IntakeIO() {});
-          };
-    } else {
-      intake = null;
     }
 
     if (SHOOTER_PIVOT_ENABLED) {
@@ -411,8 +394,12 @@ public class RobotContainer {
 
       driver
           .intakeDeployToggle()
-          .whileTrue(Commands.runOnce(() -> superstructure.setIntakeDeployed(true)))
-          .whileFalse(Commands.runOnce(() -> superstructure.setIntakeDeployed(false)));
+          .onTrue(Commands.runOnce(() -> superstructure.toggleIntakeDeploy()));
+
+      driver
+          .intakeRollersHold()
+          .whileTrue(Commands.runOnce(() -> superstructure.setIntakeRollersHeld(true)))
+          .whileFalse(Commands.runOnce(() -> superstructure.setIntakeRollersHeld(false)));
 
       driver
           .shooterPivotUp()
@@ -511,7 +498,6 @@ public class RobotContainer {
     return selected == characterizationIdleCommand ? null : selected;
   }
 
-  @SuppressWarnings("unused")
   public Command getDriveSysIdCommand() {
     if (!DRIVETRAIN_ENABLED || drive == null) {
       return Commands.none();
