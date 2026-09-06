@@ -2,7 +2,7 @@ package org.Griffins1884.frc2026.util;
 
 public class StateGraph<V extends Enum<V>, T extends Transition<? extends Enum<V>>> {
   private final Object[][] adjacencyMap;
-  
+
   @SuppressWarnings("unused")
   private final Class<V> statesEnum;
 

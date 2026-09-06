@@ -11,7 +11,6 @@ import org.Griffins1884.frc2026.OI.XboxDriverMap;
 public final class Config {
 
   public static final class Subsystems {
-    ;
     public static final boolean DRIVETRAIN_ENABLED = true;
     public static final boolean LEDS_ENABLED = false;
     public static final boolean AUTONOMOUS_ENABLED = false;

@@ -25,6 +25,9 @@ public final class TurretCommands {
   private TurretCommands() {}
 
   public static Command turretToZero(TurretSubsystem turret) {
+    if (turret == null) {
+      return Commands.none();
+    }
     return Commands.runOnce(() -> turret.setGoalRad(0.0), turret);
   }
 
@@ -32,10 +35,17 @@ public final class TurretCommands {
       TurretSubsystem turret,
       Supplier<Pose2d> robotPoseSupplier,
       Function<Pose2d, Optional<Translation2d>> targetSupplier) {
+    if (turret == null) {
+      return Commands.none();
+    }
     return Commands.run(
         () -> {
-          Pose2d robotPose = robotPoseSupplier.get();
-          Optional<Translation2d> target = targetSupplier.apply(robotPose);
+          Pose2d robotPose = robotPoseSupplier != null ? robotPoseSupplier.get() : null;
+          if (robotPose == null) {
+            return;
+          }
+          Optional<Translation2d> target =
+              targetSupplier != null ? targetSupplier.apply(robotPose) : Optional.empty();
           if (RobotLogging.isDebugMode("turret")) {
             Logger.recordOutput("Turret/AutoAim/HasTarget", target.isPresent());
           }
@@ -62,11 +72,16 @@ public final class TurretCommands {
       Function<Pose2d, Optional<Translation2d>> targetSupplier,
       Supplier<Translation2d> fieldVelocitySupplier,
       Supplier<Translation2d> fieldAccelerationSupplier) {
+    if (turret == null) {
+      return Commands.none();
+    }
     return Commands.run(
         () -> {
-          Pose2d robotPose = robotPoseSupplier.get();
+          Pose2d robotPose = robotPoseSupplier != null ? robotPoseSupplier.get() : null;
           Optional<Translation2d> target =
-              robotPose == null ? Optional.empty() : targetSupplier.apply(robotPose);
+              robotPose == null || targetSupplier == null
+                  ? Optional.empty()
+                  : targetSupplier.apply(robotPose);
           if (RobotLogging.isDebugMode("turret")) {
             Logger.recordOutput("Turret/AutoAim/HasTarget", target.isPresent());
           }

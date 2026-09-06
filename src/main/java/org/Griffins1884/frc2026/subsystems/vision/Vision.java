@@ -157,6 +157,9 @@ public class Vision extends SubsystemBase implements VisionTargetProvider {
    */
   @Override
   public Optional<Translation2d> getBestTargetTranslation(Pose2d robotPose) {
+    if (robotPose == null) {
+      return Optional.empty();
+    }
     Translation2d bestTranslation = null;
     double bestDistance = Double.POSITIVE_INFINITY;
 
@@ -290,10 +293,12 @@ public class Vision extends SubsystemBase implements VisionTargetProvider {
           }
           referenceOdometryFom = cameraFom;
           Logger.recordOutput("Vision/fusedAccepted", selected.estimate().visionRobotPoseMeters());
-          consumer.accept(
-              selected.estimate().visionRobotPoseMeters(),
-              selected.estimate().timestampSeconds(),
-              selected.estimate().visionMeasurementStdDevs());
+          if (consumer != null) {
+            consumer.accept(
+                selected.estimate().visionRobotPoseMeters(),
+                selected.estimate().timestampSeconds(),
+                selected.estimate().visionMeasurementStdDevs());
+          }
         });
 
     Logger.recordOutput("Vision/latencyPeriodicSec", Timer.getFPGATimestamp() - startTime);

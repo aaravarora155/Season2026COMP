@@ -354,8 +354,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
+  @SuppressWarnings("unused")
   private void configureDriverButtonBindings() {
-    if (DRIVETRAIN_ENABLED) {
+    if (DRIVETRAIN_ENABLED && drive != null) {
       // Default command, normal field-relative drive
       drive.setDefaultCommand(
           DriveCommands.joystickDriveCommand(
@@ -368,61 +369,38 @@ public class RobotContainer {
               DriveCommands.joystickDriveRobotRelativeFlippedCommand(
                   drive, driver.getYAxis(), driver.getXAxis(), driver.getRotAxis()));
 
-      // // Reset gyro to 0° when B button is pressed
-      driver
-          .resetOdometry()
-          .onTrue(
-              Commands.runOnce(
-                      () -> {
-                        if (drive == null) {
-                          return;
-                        }
-                        var alliance = DriverStation.getAlliance();
-                        if (alliance.isEmpty()) {
-                          Logger.recordOutput("Odometry/AllianceZero/Failed", true);
-                          Logger.recordOutput("Odometry/AllianceZero/Reason", "ALLIANCE_UNKNOWN");
-                          return;
-                        }
-                        drive.zeroGyroAndOdometryToAllianceWall(alliance.get());
-                      },
-                      drive)
-                  .ignoringDisable(true));
+      // Reset gyro to 0° when B button is pressed
+      Command resetOdometryCmd =
+          Commands.runOnce(
+              () -> {
+                if (drive == null) {
+                  return;
+                }
+                var alliance = DriverStation.getAlliance();
+                if (alliance.isEmpty()) {
+                  Logger.recordOutput("Odometry/AllianceZero/Failed", true);
+                  Logger.recordOutput("Odometry/AllianceZero/Reason", "ALLIANCE_UNKNOWN");
+                  return;
+                }
+                drive.zeroGyroAndOdometryToAllianceWall(alliance.get());
+              },
+              drive);
+      if (LEDS_ENABLED && leds != null) {
+        resetOdometryCmd =
+            resetOdometryCmd.andThen(leds.whiteFlash().repeatedly().withTimeout(2.0));
+      }
+      driver.resetOdometry().onTrue(resetOdometryCmd.ignoringDisable(true));
     }
 
-    drive.setDefaultCommand(
-        DriveCommands.joystickDriveCommand(
-            drive, driver.getYAxis(), driver.getXAxis(), driver.getRotAxis()));
+    if (LEDS_ENABLED && leds != null) {
+      leds.setDefaultCommand(
+          leds.allianceColor(
+                  () -> DriverStation.getAlliance().orElse(Alliance.Red).equals(Alliance.Red))
+              .repeatedly());
 
-    leds.setDefaultCommand(
-        leds.allianceColor(() -> DriverStation.getAlliance().get().equals(Alliance.Red)).repeatedly()
-    );
-
-    driver
-        .alignWithBall()
-        .whileTrue(
-            DriveCommands.joystickDriveRobotRelativeFlippedCommand(
-                drive, driver.getYAxis(), driver.getXAxis(), driver.getRotAxis()));
-
-    driver
-        .resetOdometry()
-        .onTrue(
-            Commands.runOnce(
-                    () -> {
-                      Optional<Alliance> alliance = DriverStation.getAlliance();
-                      if (alliance.isEmpty()) {
-                        Logger.recordOutput("Odometry/AllianceZero/Failed", true);
-                        Logger.recordOutput("Odometry/AllianceZero/Reason", "ALLIANCE_UNKNOWN");
-                        return;
-                      }
-                      drive.zeroGyroAndOdometryToAllianceWall(alliance.get());
-                    },
-                    drive)
-                .andThen(leds.whiteFlash().repeatedly().withTimeout(2.0)) // todo make flicker
-                .ignoringDisable(true));
-
-    new Trigger(() -> DriverStation.isTeleop() && DriverStation.getMatchTime() < 25).whileTrue(
-      leds.rainbow().repeatedly()
-    );
+      new Trigger(() -> DriverStation.isTeleop() && DriverStation.getMatchTime() < 25)
+          .whileTrue(leds.rainbow().repeatedly());
+    }
   }
 
   private void configurePathPlannerTelemetry() {
@@ -455,7 +433,7 @@ public class RobotContainer {
     if (!AUTONOMOUS_ENABLED || drive == null) {
       return;
     }
-    
+
     getQueuedAutonomousStartPose()
         .ifPresent(
             pose -> {

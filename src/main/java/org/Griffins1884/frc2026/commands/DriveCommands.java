@@ -71,6 +71,9 @@ public class DriveCommands {
       DoubleSupplier xSupplier,
       DoubleSupplier ySupplier,
       DoubleSupplier omegaSupplier) {
+    if (drive == null) {
+      return;
+    }
     // Get linear velocity
     Translation2d linearVelocity =
         getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
@@ -96,6 +99,9 @@ public class DriveCommands {
       DoubleSupplier xSupplier,
       DoubleSupplier ySupplier,
       DoubleSupplier omegaSupplier) {
+    if (drive == null) {
+      return Commands.none();
+    }
     return Commands.run(() -> joystickDrive(drive, xSupplier, ySupplier, omegaSupplier), drive);
   }
 
@@ -108,6 +114,9 @@ public class DriveCommands {
       DoubleSupplier xSupplier,
       DoubleSupplier ySupplier,
       DoubleSupplier omegaSupplier) {
+    if (drive == null) {
+      return Commands.none();
+    }
     return Commands.run(
         () -> {
           Translation2d linearVelocity =
@@ -144,6 +153,9 @@ public class DriveCommands {
    * <p>This command should only be used in voltage control mode.
    */
   public static Command feedforwardCharacterization(SwerveSubsystem drive) {
+    if (drive == null) {
+      return Commands.none();
+    }
     List<Double> velocitySamples = new LinkedList<>();
     List<Double> voltageSamples = new LinkedList<>();
     Timer timer = new Timer();
@@ -210,6 +222,9 @@ public class DriveCommands {
 
   /** Measures the robot's wheel radius by spinning in a circle and optionally saves the result. */
   public static Command wheelRadiusCharacterization(SwerveSubsystem drive, boolean saveResult) {
+    if (drive == null) {
+      return Commands.none();
+    }
     SlewRateLimiter limiter =
         new SlewRateLimiter(
             AlignConstants.Characterization.WHEEL_RADIUS_RAMP_RATE_RAD_PER_SEC2.get());
@@ -289,6 +304,9 @@ public class DriveCommands {
   }
 
   public static Command captureModuleZeroOffsets(SwerveSubsystem drive) {
+    if (drive == null) {
+      return Commands.none();
+    }
     return Commands.runOnce(
         () -> {
           drive.captureModuleZeroOffsets();
@@ -300,6 +318,9 @@ public class DriveCommands {
 
   public static Command captureModuleZeroOffset(
       SwerveSubsystem drive, int moduleIndex, String label) {
+    if (drive == null) {
+      return Commands.none();
+    }
     return Commands.runOnce(
         () -> {
           drive.captureModuleZeroOffset(moduleIndex);
@@ -310,6 +331,9 @@ public class DriveCommands {
   }
 
   public static Command clearModuleZeroOffsets(SwerveSubsystem drive) {
+    if (drive == null) {
+      return Commands.none();
+    }
     return Commands.runOnce(
         () -> {
           drive.clearModuleZeroOffsets();
@@ -320,6 +344,9 @@ public class DriveCommands {
 
   public static Command clearModuleZeroOffset(
       SwerveSubsystem drive, int moduleIndex, String label) {
+    if (drive == null) {
+      return Commands.none();
+    }
     return Commands.runOnce(
         () -> {
           drive.clearModuleZeroOffset(moduleIndex);

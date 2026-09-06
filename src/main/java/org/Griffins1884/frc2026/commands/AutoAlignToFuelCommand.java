@@ -6,6 +6,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import org.Griffins1884.frc2026.subsystems.swerve.SwerveSubsystem;
 import org.littletonrobotics.junction.Logger;
 
@@ -44,10 +45,15 @@ public class AutoAlignToFuelCommand extends Command {
   public AutoAlignToFuelCommand(SwerveSubsystem drive) {
     this.drive = drive;
     this.limelight = NetworkTableInstance.getDefault().getTable("limelight-right");
-    addRequirements(drive);
+    if (drive != null) {
+      addRequirements(drive);
+    }
   }
 
   public static Command alignToFuelCommand(SwerveSubsystem drive) {
+    if (drive == null) {
+      return Commands.none();
+    }
     return new AutoAlignToFuelCommand(drive);
   }
 
@@ -65,6 +71,10 @@ public class AutoAlignToFuelCommand extends Command {
 
   @Override
   public void execute() {
+    if (drive == null) {
+      return;
+    }
+
     double tv = limelight.getEntry("tv").getDouble(0.0);
     double tx = limelight.getEntry("tx").getDouble(0.0);
 
@@ -120,7 +130,9 @@ public class AutoAlignToFuelCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     timer.stop();
-    drive.runVelocity(new ChassisSpeeds());
+    if (drive != null) {
+      drive.runVelocity(new ChassisSpeeds());
+    }
   }
 
   @Override

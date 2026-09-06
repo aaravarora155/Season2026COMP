@@ -289,7 +289,9 @@ public class IntakePivotSubsystem extends SubsystemBase {
     boolean detected;
     if (!primaryConfigured && !secondaryConfigured) {
       detected = false;
-    } else if (primaryConfigured && secondaryConfigured && IntakePivotConstants.ZERO_LIMIT_SWITCH_REQUIRE_BOTH) {
+    } else if (primaryConfigured
+        && secondaryConfigured
+        && IntakePivotConstants.ZERO_LIMIT_SWITCH_REQUIRE_BOTH) {
       detected = primaryPressed && secondaryPressed;
     } else {
       detected = primaryPressed || secondaryPressed;

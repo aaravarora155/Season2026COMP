@@ -82,6 +82,7 @@ public class Superstructure extends SubsystemBase {
   @Setter private boolean shooterPivotExternalControl = false;
   private DoubleSupplier manualTurretAxis = () -> 0.0;
   private DoubleSupplier manualPivotAxis = () -> 0.0;
+
   @SuppressWarnings("unused")
   private Supplier<Optional<Pose2d>> autoStartPoseSupplier = Optional::empty;
 
@@ -338,7 +339,7 @@ public class Superstructure extends SubsystemBase {
     if (chooser == null) {
       return;
     }
-    if (INTAKE_PIVOT_ENABLED) {
+    if (INTAKE_PIVOT_ENABLED && arms.intakePivot != null) {
       addSysIdOptions(
           chooser,
           "Intake Pivot",
@@ -347,7 +348,7 @@ public class Superstructure extends SubsystemBase {
           arms.intakePivot.sysIdDynamic(SysIdRoutine.Direction.kForward),
           arms.intakePivot.sysIdDynamic(SysIdRoutine.Direction.kReverse));
     }
-    if (SHOOTER_PIVOT_ENABLED) {
+    if (SHOOTER_PIVOT_ENABLED && arms.shooterPivot != null) {
       addSysIdOptions(
           chooser,
           "Shooter Pivot",
@@ -356,7 +357,7 @@ public class Superstructure extends SubsystemBase {
           arms.shooterPivot.sysIdDynamic(SysIdRoutine.Direction.kForward),
           arms.shooterPivot.sysIdDynamic(SysIdRoutine.Direction.kReverse));
     }
-    if (INTAKE_ENABLED) {
+    if (INTAKE_ENABLED && rollers.intake != null) {
       addSysIdOptions(
           chooser,
           "Intake",
@@ -365,7 +366,7 @@ public class Superstructure extends SubsystemBase {
           rollers.intake.sysIdDynamic(SysIdRoutine.Direction.kForward),
           rollers.intake.sysIdDynamic(SysIdRoutine.Direction.kReverse));
     }
-    if (INDEXER_ENABLED) {
+    if (INDEXER_ENABLED && rollers.indexer != null) {
       addSysIdOptions(
           chooser,
           "Indexer",
@@ -374,7 +375,7 @@ public class Superstructure extends SubsystemBase {
           rollers.indexer.sysIdDynamic(SysIdRoutine.Direction.kForward),
           rollers.indexer.sysIdDynamic(SysIdRoutine.Direction.kReverse));
     }
-    if (SHOOTER_ENABLED) {
+    if (SHOOTER_ENABLED && rollers.shooter != null) {
       addSysIdOptions(
           chooser,
           "Shooter",
@@ -720,7 +721,9 @@ public class Superstructure extends SubsystemBase {
     setShooterPivotGoal(ShooterPivotGoal.TESTING, false, 0.0);
     Translation2d target = getHubTarget();
     aimTurretAt(target);
-    ShooterCommands.calc(drive.getPose(), target, currentState);
+    if (drive != null) {
+      ShooterCommands.calc(drive.getPose(), target, currentState);
+    }
     // if (turret != null) {
     //   turret.setGoalRad(TurretConstants.TEST_GOAL_RAD.get());
     //   lastTurretAction = "TEST_GOAL";

@@ -84,13 +84,15 @@ public class AutoAlignToPoseCommand extends Command {
                 AlignConstants.Auto.MAX_ANGULAR_ACCEL_RAD_PER_SEC2.get()),
             AlignConstants.LOOP_PERIOD_SEC);
     applyTuning();
-    addRequirements(drive);
+    if (drive != null) {
+      addRequirements(drive);
+    }
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
   @Override
   public void initialize() {
-    if (target == null) return;
+    if (drive == null || target == null) return;
     updateTuningIfChanged(true);
 
     Pose2d currentPose = drive.getPose();
@@ -133,7 +135,7 @@ public class AutoAlignToPoseCommand extends Command {
 
   @Override
   public void execute() {
-    if (target == null) {
+    if (drive == null || target == null) {
       return;
     }
     updateTuningIfChanged(false);
@@ -203,7 +205,7 @@ public class AutoAlignToPoseCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    if (stopOnEnd) {
+    if (stopOnEnd && drive != null) {
       drive.runVelocity(new ChassisSpeeds());
     }
   }

@@ -58,6 +58,9 @@ public class ShooterCommands {
 
   public static Map<Vals, Double> calc(
       Pose2d robot, Translation2d target, Superstructure.SuperState state) {
+    if (robot == null || target == null) {
+      return dataPack(0.0, state);
+    }
     // Distances
     double distanceX;
     double distanceY;
@@ -364,6 +367,9 @@ public class ShooterCommands {
       boolean feasible) {}
 
   public static Command pivotOpenLoop(ShooterPivotSubsystem pivot, DoubleSupplier percentSupplier) {
+    if (pivot == null) {
+      return Commands.none();
+    }
     return Commands.runEnd(
         () -> pivot.setOpenLoop(percentSupplier.getAsDouble()), pivot::stopOpenLoop, pivot);
   }

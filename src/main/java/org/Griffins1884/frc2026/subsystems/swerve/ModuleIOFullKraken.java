@@ -44,6 +44,7 @@ public class ModuleIOFullKraken implements ModuleIO {
 
   @SuppressWarnings("unused")
   private static final double RADIANS_PER_ROTATION = TWO_PI;
+
   private double softwareZeroTrimRotations;
 
   private final TalonFXConfiguration driveConfig = new TalonFXConfiguration();
@@ -53,6 +54,7 @@ public class ModuleIOFullKraken implements ModuleIO {
   // Control requests
   @SuppressWarnings("unused")
   private final TorqueCurrentFOC torqueCurrentRequest = new TorqueCurrentFOC(0).withUpdateFreqHz(0);
+
   private final VoltageOut voltageRequest = new VoltageOut(0.0).withUpdateFreqHz(0);
   private final PositionTorqueCurrentFOC positionTorqueCurrentRequest =
       new PositionTorqueCurrentFOC(0.0).withUpdateFreqHz(0);
