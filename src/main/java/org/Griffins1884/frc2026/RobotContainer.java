@@ -89,6 +89,7 @@ public class RobotContainer {
   private boolean autoAllianceZeroed = false;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  @SuppressWarnings("unused")
   public RobotContainer() {
     // Validate the declarative mechanism catalog up front so config errors fail early.
     RobotMechanismDefinitions.all();
@@ -186,7 +187,7 @@ public class RobotContainer {
       superstructure.setTurretExternalControl(true);
     }
 
-    if (VISION_ENABLED) {
+    if (VISION_ENABLED && drive != null) {
       vision =
           switch (MODE) {
             case REAL, SIM ->
@@ -447,6 +448,7 @@ public class RobotContainer {
     return selected == characterizationIdleCommand ? null : selected;
   }
 
+  @SuppressWarnings("unused")
   public Command getDriveSysIdCommand() {
     if (!DRIVETRAIN_ENABLED || drive == null) {
       return Commands.none();
