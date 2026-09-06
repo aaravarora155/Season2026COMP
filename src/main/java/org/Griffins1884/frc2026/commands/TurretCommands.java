@@ -238,4 +238,11 @@ public final class TurretCommands {
             ShooterConstants.SLIP_FACTOR.get());
     return estimate.timeSeconds();
   }
+
+  public static Command turretOpenLoop(TurretSubsystem turret, double percent) {
+    if (turret == null) {
+      return Commands.none();
+    }
+    return Commands.runEnd(() -> turret.setOpenLoop(percent), turret::stopOpenLoop, turret);
+  }
 }

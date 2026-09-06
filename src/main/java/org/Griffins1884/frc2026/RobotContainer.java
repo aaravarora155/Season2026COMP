@@ -3,7 +3,9 @@ package org.Griffins1884.frc2026;
 import static org.Griffins1884.frc2026.Config.Controllers.getDriverController;
 import static org.Griffins1884.frc2026.Config.Subsystems.AUTONOMOUS_ENABLED;
 import static org.Griffins1884.frc2026.Config.Subsystems.DRIVETRAIN_ENABLED;
+import static org.Griffins1884.frc2026.Config.Subsystems.INTAKE_ENABLED;
 import static org.Griffins1884.frc2026.Config.Subsystems.LEDS_ENABLED;
+import static org.Griffins1884.frc2026.Config.Subsystems.SHOOTER_PIVOT_ENABLED;
 import static org.Griffins1884.frc2026.Config.Subsystems.TURRET_ENABLED;
 import static org.Griffins1884.frc2026.Config.Subsystems.VISION_ENABLED;
 import static org.Griffins1884.frc2026.GlobalConstants.MODE;
@@ -33,15 +35,23 @@ import java.util.Optional;
 import org.Griffins1884.frc2026.GlobalConstants.RobotMode;
 import org.Griffins1884.frc2026.OI.DriverMap;
 import org.Griffins1884.frc2026.commands.DriveCommands;
+import org.Griffins1884.frc2026.commands.ShooterCommands;
 import org.Griffins1884.frc2026.commands.TurretCommands;
 import org.Griffins1884.frc2026.mechanisms.RobotMechanismDefinitions;
 import org.Griffins1884.frc2026.simulation.maple.MapleArenaSetup;
 import org.Griffins1884.frc2026.simulation.maple.Rebuilt2026FieldModel;
 import org.Griffins1884.frc2026.simulation.visualization.RobotStateVisualizer;
 import org.Griffins1884.frc2026.subsystems.Superstructure;
+import org.Griffins1884.frc2026.subsystems.intake.IntakeIO;
+import org.Griffins1884.frc2026.subsystems.intake.IntakeIOKraken;
+import org.Griffins1884.frc2026.subsystems.intake.IntakeSubsystem;
 import org.Griffins1884.frc2026.subsystems.leds.LEDSubsystem;
 import org.Griffins1884.frc2026.subsystems.objectivetracker.OperatorBoardIOServer;
 import org.Griffins1884.frc2026.subsystems.objectivetracker.OperatorBoardTracker;
+import org.Griffins1884.frc2026.subsystems.shooter.ShooterPivotIO;
+import org.Griffins1884.frc2026.subsystems.shooter.ShooterPivotIOKraken;
+import org.Griffins1884.frc2026.subsystems.shooter.ShooterPivotIOSim;
+import org.Griffins1884.frc2026.subsystems.shooter.ShooterPivotSubsystem;
 import org.Griffins1884.frc2026.subsystems.swerve.*;
 import org.Griffins1884.frc2026.subsystems.turret.TurretConstants;
 import org.Griffins1884.frc2026.subsystems.turret.TurretIO;
@@ -74,7 +84,9 @@ public class RobotContainer {
   private CommandableDriveSimulationAdapter driveSimulation;
   private TerrainAwareSwerveSimulation mapleDriveSimulation;
   private final TurretSubsystem turret;
+  private final ShooterPivotSubsystem shooterPivot;
   private final OperatorBoardTracker operatorBoard;
+  private final IntakeSubsystem intake;
 
   // Controller
   private final DriverMap driver = getDriverController();
@@ -161,6 +173,28 @@ public class RobotContainer {
     } else {
       drive = null;
       superstructure = new Superstructure(null);
+    }
+
+    if (INTAKE_ENABLED) {
+      intake =
+          switch (MODE) {
+            case REAL -> new IntakeSubsystem("Intake", new IntakeIOKraken());
+            case SIM -> new IntakeSubsystem("Intake", new IntakeIOKraken());
+            default -> new IntakeSubsystem("Intake", new IntakeIO() {});
+          };
+    } else {
+      intake = null;
+    }
+
+    if (SHOOTER_PIVOT_ENABLED) {
+      shooterPivot =
+          switch (MODE) {
+            case REAL -> new ShooterPivotSubsystem("ShooterPivot", new ShooterPivotIOKraken());
+            case SIM -> new ShooterPivotSubsystem("ShooterPivot", new ShooterPivotIOSim());
+            default -> new ShooterPivotSubsystem("ShooterPivot", new ShooterPivotIO() {});
+          };
+    } else {
+      shooterPivot = null;
     }
 
     if (TURRET_ENABLED) {
@@ -370,7 +404,36 @@ public class RobotContainer {
               DriveCommands.joystickDriveRobotRelativeFlippedCommand(
                   drive, driver.getYAxis(), driver.getXAxis(), driver.getRotAxis()));
 
-      // Reset gyro to 0° when B button is pressed
+      driver
+          .shootToggle()
+          .whileTrue(superstructure.runIndexer(true))
+          .whileFalse(superstructure.runIndexer(false));
+
+      driver
+          .intakeDeployToggle()
+          .whileTrue(Commands.runOnce(() -> superstructure.setIntakeDeployed(true)))
+          .whileFalse(Commands.runOnce(() -> superstructure.setIntakeDeployed(false)));
+
+      driver
+          .shooterPivotUp()
+          .whileTrue(ShooterCommands.pivotOpenLoop(shooterPivot, 0.1))
+          .whileFalse(ShooterCommands.pivotOpenLoop(shooterPivot, 0));
+
+      driver
+          .shooterPivotUp()
+          .whileTrue(ShooterCommands.pivotOpenLoop(shooterPivot, -0.1))
+          .whileFalse(ShooterCommands.pivotOpenLoop(shooterPivot, 0));
+
+      driver
+          .turretLeft()
+          .whileTrue(TurretCommands.turretOpenLoop(turret, 0.1))
+          .whileFalse(TurretCommands.turretOpenLoop(turret, 0));
+
+      driver
+          .turretRight()
+          .whileTrue(TurretCommands.turretOpenLoop(turret, -0.1))
+          .whileFalse(TurretCommands.turretOpenLoop(turret, 0));
+
       Command resetOdometryCmd =
           Commands.runOnce(
               () -> {

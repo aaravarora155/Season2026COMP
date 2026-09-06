@@ -63,4 +63,20 @@ public class XboxDriverMap extends CommandXboxController implements DriverMap {
     return startEnd(
         () -> getHID().setRumble(kBothRumble, 1), () -> getHID().setRumble(kBothRumble, 0));
   }
+
+  public Trigger shooterPivotUp() {
+    return y();
+  }
+
+  public Trigger shooterPivotDown() {
+    return a();
+  }
+
+  public Trigger turretLeft() {
+    return x();
+  }
+
+  public Trigger turretRight() {
+    return b();
+  }
 }

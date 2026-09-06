@@ -40,27 +40,43 @@ public class SimXboxUniversalMap extends CommandXboxController implements Driver
 
   @Override
   public Trigger alignWithBall() {
-    return x();
+    return new Trigger(() -> this.getLeftTriggerAxis() > 0.5);
   }
 
   @Override
   public Trigger shootToggle() {
-    return x();
+    return new Trigger(() -> this.getRightTriggerAxis() > 0.5);
   }
 
   @Override
   public Trigger intakeRollersHold() {
-    return y();
+    return rightBumper();
   }
 
   @Override
   public Trigger intakeDeployToggle() {
-    return a();
+    return leftBumper();
   }
 
   @Override
   public Command rumble() {
     return startEnd(
         () -> getHID().setRumble(kBothRumble, 1), () -> getHID().setRumble(kBothRumble, 0));
+  }
+
+  public Trigger shooterPivotUp() {
+    return y();
+  }
+
+  public Trigger shooterPivotDown() {
+    return a();
+  }
+
+  public Trigger turretLeft() {
+    return x();
+  }
+
+  public Trigger turretRight() {
+    return b();
   }
 }

@@ -37,4 +37,12 @@ public interface DriverMap {
   default Command rumble() {
     return none();
   }
+
+  Trigger shooterPivotUp();
+
+  Trigger shooterPivotDown();
+
+  Trigger turretLeft();
+
+  public Trigger turretRight();
 }

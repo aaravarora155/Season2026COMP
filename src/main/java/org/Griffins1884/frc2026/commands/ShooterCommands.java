@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
-import java.util.function.DoubleSupplier;
 import org.Griffins1884.frc2026.subsystems.Superstructure;
 import org.Griffins1884.frc2026.subsystems.shooter.ShooterConstants;
 import org.Griffins1884.frc2026.subsystems.shooter.ShooterPivotConstants;
@@ -366,11 +365,10 @@ public class ShooterCommands {
       double heightErrorMeters,
       boolean feasible) {}
 
-  public static Command pivotOpenLoop(ShooterPivotSubsystem pivot, DoubleSupplier percentSupplier) {
+  public static Command pivotOpenLoop(ShooterPivotSubsystem pivot, double percent) {
     if (pivot == null) {
       return Commands.none();
     }
-    return Commands.runEnd(
-        () -> pivot.setOpenLoop(percentSupplier.getAsDouble()), pivot::stopOpenLoop, pivot);
+    return Commands.runEnd(() -> pivot.setOpenLoop(percent), pivot::stopOpenLoop, pivot);
   }
 }

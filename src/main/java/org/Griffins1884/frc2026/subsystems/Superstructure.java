@@ -79,6 +79,7 @@ public class Superstructure extends SubsystemBase {
   private boolean manualControlActive = false;
   private boolean wasTeleopEnabled = false;
   private boolean wasAutonomousEnabled = false;
+  private boolean indexerActive = false;
   @Setter private boolean shooterPivotExternalControl = false;
   private DoubleSupplier manualTurretAxis = () -> 0.0;
   private DoubleSupplier manualPivotAxis = () -> 0.0;
@@ -470,7 +471,6 @@ public class Superstructure extends SubsystemBase {
       applyShotMathAimingAndShooterSolution(getFerryingTarget(), shooterShouldSpin);
     }
 
-    boolean indexerActive = shouldEnableIndexer(shootEnabled, shooterShouldSpin);
     setIndexerGoal(indexerActive ? IndexerGoal.FORWARD : IndexerGoal.IDLING);
   }
 
@@ -591,7 +591,6 @@ public class Superstructure extends SubsystemBase {
     }
     setIntakePivotGoal(intakeDeployed ? IntakePivotGoal.PICKUP : IntakePivotGoal.IDLING);
     setIntakeGoal(resolveIntakeGoal(true));
-    boolean indexerActive = shouldEnableIndexer(shootEnabled, true);
     setIndexerGoal(indexerActive ? IndexerGoal.FORWARD : IndexerGoal.IDLING);
   }
 
@@ -692,15 +691,22 @@ public class Superstructure extends SubsystemBase {
     setIntakeGoal(IntakeGoal.IDLING);
     setIntakePivotGoal(IntakePivotGoal.IDLING);
     applyShotMathAimingAndShooterSolution(getHubTarget(), true);
-    boolean indexerActive = shouldEnableIndexer(indexerRequested, true);
     setIndexerGoal(indexerActive ? IndexerGoal.FORWARD : IndexerGoal.IDLING);
+  }
+
+  public Command runIndexer(boolean indexerRequested) {
+    shootEnabled = indexerRequested;
+    return Commands.runOnce(() -> setIndexerState(indexerRequested));
+  }
+
+  private void setIndexerState(boolean indexerRequested) {
+    indexerActive = indexerRequested;
   }
 
   private void applyShootingAndIntaking(boolean indexerRequested) {
     setIntakeGoal(IntakeGoal.FORWARD);
     setIntakePivotGoal(IntakePivotGoal.PICKUP);
     applyShotMathAimingAndShooterSolution(getHubTarget(), true);
-    boolean indexerActive = shouldEnableIndexer(indexerRequested, true);
     setIndexerGoal(indexerActive ? IndexerGoal.FORWARD : IndexerGoal.IDLING);
   }
 
@@ -709,7 +715,6 @@ public class Superstructure extends SubsystemBase {
     setIntakeGoal(IntakeGoal.FORWARD);
     setIntakePivotGoal(IntakePivotGoal.PICKUP);
     applyShotMathAimingAndShooterSolution(target, true);
-    boolean indexerActive = shouldEnableIndexer(indexerRequested, true);
     setIndexerGoal(indexerActive ? IndexerGoal.FORWARD : IndexerGoal.IDLING);
   }
 

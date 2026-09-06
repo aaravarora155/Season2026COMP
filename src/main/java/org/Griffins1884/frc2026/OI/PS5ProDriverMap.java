@@ -73,6 +73,26 @@ public class PS5ProDriverMap extends CommandPS5Controller implements DriverMap {
   }
 
   @Override
+  public Trigger shooterPivotUp() {
+    return button(50);
+  }
+
+  @Override
+  public Trigger shooterPivotDown() {
+    return button(51);
+  }
+
+  @Override
+  public Trigger turretLeft() {
+    return button(52);
+  }
+
+  @Override
+  public Trigger turretRight() {
+    return button(53);
+  }
+
+  @Override
   public Command rumble() {
     return startEnd(
         () -> getHID().setRumble(kBothRumble, 1), () -> getHID().setRumble(kBothRumble, 0));

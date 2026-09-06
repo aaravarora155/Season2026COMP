@@ -58,6 +58,22 @@ public class PS5DriverMap extends CommandPS5Controller implements DriverMap {
     return triangle();
   }
 
+  public Trigger shooterPivotUp() {
+    return button(50);
+  }
+
+  public Trigger shooterPivotDown() {
+    return button(51);
+  }
+
+  public Trigger turretLeft() {
+    return button(52);
+  }
+
+  public Trigger turretRight() {
+    return button(53);
+  }
+
   @Override
   public Command rumble() {
     return startEnd(
