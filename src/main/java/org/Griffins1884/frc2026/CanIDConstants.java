@@ -8,9 +8,11 @@ public class CanIDConstants {
   // Intake
   public static final int[] INTAKE_PIVOT_IDS = {19, 20};
   public static int[] INTAKE_IDS = {21};
+  public static int TOOTH_ROLLOUT_ID = 90;
 
   // Indexer
   public static int[] INDEXER_IDS = {18};
+  public static int SPINDEXER_ID = 91;
 
   // Shooter
   public static int[] SHOOTER_IDS = {22, 23};
