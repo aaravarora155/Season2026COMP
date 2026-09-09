@@ -1,5 +1,5 @@
 # Season 2026 Documentation
-This is the documentation for the Griffins1884 complete Season 2026 Library. It consists of System Architecture and Key Checkpoints for debugging.
+This is the documentation for the Griffins1884 core Season 2026 Library (excludes test, tools, and non Java Files). It consists of System Architecture and Key Checkpoints for debugging.
 
 ## Constants Architecture
 
@@ -15,7 +15,7 @@ There are 4 Levels of Constants:
 ## Subsystems Architecture
 ***NOTE:*** CAN IDs are declared in `CanIDConstants.java`
 
-### Subsytem List:
+### Subsytem List
 - Shooter
     - Consists of shooter & shooter pivot related classes
 - Turret
@@ -157,3 +157,64 @@ ___
         - Contains Core functionality which allows us to get useful information from the limelights
 - FiducialObservation
     - Creates a record of where an april tag appears in the camera's frame, how much space it takes up in the frame, how far away the camera is from the april tag, how trustworthy the actual detection is, and the april tag ID.
+### ObjectiveTracker
+- OperatorBoard
+    - Acts as a communication server between the digital operator board and the actual robot.
+    ___ 
+    - OperatorBoardContract
+        - Contains all of the codes that both the client and robot sides of the operator board can understand
+        - **ToRobot:** Represents all of the data that needs to be sent to the robot from the dashboard
+        - **ToDashboard:** Represents all of the data that needs to be sent to the dashboard from the robot
+    - OperatorBoardIO
+        - Outlines all of the required methods and variables that may need to be implemented in `OperatorBoardIOServer.java`
+    - OperatorBoardIOServer
+        - Implements all of the methods outlined in `OperatorBoardIO.java` in a way that is useful to the digital operator board
+    - OperatorBoardDiagnosticBundleWriter
+        - Logs all of the diagnostic files required by the operator board to JSON Files
+    - OperatorBoardDataModel
+        - Creates records of all of the data that can be used by the operator board
+    - OperatorBoardPersistence
+        - Creates a memory of operator board states in case of network table dropouts
+    - OperaterBoardTracker
+        - Keeps record of all actions that have already been executed
+- Rebuilt
+    - RebuiltAutoConstants
+        - Sets constants which autonomous must follow and can be edited in advantage scope under TunableNumbers
+    - RebuiltAutoQueue
+        - Creates a queue of auton commands that need to be executed
+    - RebuiltSpotLibrary
+        - Gets spots on the field so that its validity can be checked during autonomous 
+- DeployAutoLibrary
+    - Contains Records and methods that can be used to execute autonomous commands
+
+### Superstrucure
+- Superstructure
+    - Contains significant amount of robot control execution such as intake and shooter control sequences
+- SuperstructureConstants
+    - Contains the constants needed for Superstructure to work correctly
+
+## Core Control Architecture
+- Main
+    - Creates a Robot Instance and Initates entire code libary
+- Robot
+    - Contains core functions for periodic and initiation of Autonomous, Teleop, and Test driver modes
+- RobotContainer
+    - Initiates each subsystem, driver maps, diagnostics, pathplanner, and autonomous
+- StateMachine
+    - Ensures that transitions between states within a subsystem are valid and can be completed in certain orders
+
+## Commands Architecture
+- AlignConstants
+    - Contains the constants required for the AutoAlign Classes
+- AutoAlignToFuelCommand
+    - Contains necessary functions required to align the fuel game pieces
+- AutoAlignToPoseCommand
+    - Needed to align to certain poses on the field
+- DriveCommands
+    - Contains core drive commands to assist swerve
+- ShooterCommands
+    - Contains lot of math that is required for shooter calculations to targets to be done correctly
+- TurretCommands
+    - Contains math required for turret movements for aiming to targets and shooting while moving
+- AutoCommands
+    - Contains code for autonomous to operate
