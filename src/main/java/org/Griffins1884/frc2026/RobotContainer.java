@@ -15,6 +15,10 @@ import static org.Griffins1884.frc2026.subsystems.swerve.SwerveConstants.FRONT_R
 import static org.Griffins1884.frc2026.subsystems.swerve.SwerveConstants.GYRO_TYPE;
 import static org.Griffins1884.frc2026.subsystems.vision.AprilTagVisionConstants.*;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.PPLibTelemetry;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -30,9 +34,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import java.io.IOException;
 import java.util.Optional;
 import org.Griffins1884.frc2026.GlobalConstants.RobotMode;
 import org.Griffins1884.frc2026.OI.DriverMap;
+import org.Griffins1884.frc2026.commands.AutoCommands;
 import org.Griffins1884.frc2026.commands.DriveCommands;
 import org.Griffins1884.frc2026.commands.ShooterCommands;
 import org.Griffins1884.frc2026.commands.TurretCommands;
@@ -62,6 +68,7 @@ import org.griffins1884.sim3d.TerrainAwareSwerveSimulation;
 import org.griffins1884.sim3d.integration.DriveSimulationFactories;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
+import org.json.simple.parser.ParseException;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -360,6 +367,7 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureDriverButtonBindings();
+    configurePathPlannerAutonomous();
     configurePathPlannerTelemetry();
 
     superstructure.setAutoStartPoseSupplier(
@@ -451,6 +459,28 @@ public class RobotContainer {
 
       new Trigger(() -> DriverStation.isTeleop() && DriverStation.getMatchTime() < 25)
           .whileTrue(leds.rainbow().repeatedly());
+    }
+  }
+
+  private void configurePathPlannerAutonomous() {
+    AutoCommands.registerAutoCommands(superstructure, drive, leds);
+    if (drive == null) {
+      return;
+    }
+    try {
+      RobotConfig robotConfig = RobotConfig.fromGUISettings();
+      AutoBuilder.configure(
+          drive::getPose,
+          pose -> resetRobotToPose(pose, MODE == RobotMode.SIM),
+          drive::getRobotRelativeSpeeds,
+          drive::runVelocity,
+          new PPHolonomicDriveController(new PIDConstants(5.0), new PIDConstants(5.0)),
+          robotConfig,
+          () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
+          drive);
+    } catch (IOException | ParseException ex) {
+      DriverStation.reportError(
+          "Failed to configure PathPlanner autonomous: " + ex.getMessage(), ex.getStackTrace());
     }
   }
 

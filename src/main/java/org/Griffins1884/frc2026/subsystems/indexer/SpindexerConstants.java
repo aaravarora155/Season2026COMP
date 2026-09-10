@@ -1,9 +1,9 @@
 package org.Griffins1884.frc2026.subsystems.indexer;
 
+import org.Griffins1884.frc2026.CanIDConstants;
 import org.Griffins1884.frc2026.GlobalConstants;
 import org.Griffins1884.frc2026.mechanisms.MechanismDefinition;
 import org.Griffins1884.frc2026.util.LoggedTunableNumber;
-import org.Griffins1884.frc2026.CanIDConstants;
 
 public final class SpindexerConstants {
   public static final MechanismDefinition.MotorControllerType MOTOR_CONTROLLER =

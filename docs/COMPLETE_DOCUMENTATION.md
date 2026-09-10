@@ -1,5 +1,5 @@
 # Season 2026 Documentation
-This is the documentation for the Griffins1884 core Season 2026 Library (excludes test, tools, and non Java Files). It consists of System Architecture and Key Checkpoints for debugging.
+This is the documentation for the Griffins1884 core Season 2026 Library (excludes test, tools, Operator Interface, and non Java Files). It consists of System Architecture and Key Checkpoints for debugging.
 
 ## Constants Architecture
 
@@ -126,7 +126,7 @@ ___
 **5 Main Groups**
 - AprilTag
     - Helpers
-        - Contains a mathematical function that returns a matrix of the standard deviation 
+        - Contains a mathematical function that returns a matrix of the standard deviation
     - Constants
         - Contains Decleration of constants for all limelights that look for AprilTags
     - IO
@@ -160,7 +160,7 @@ ___
 ### ObjectiveTracker
 - OperatorBoard
     - Acts as a communication server between the digital operator board and the actual robot.
-    ___ 
+    ___
     - OperatorBoardContract
         - Contains all of the codes that both the client and robot sides of the operator board can understand
         - **ToRobot:** Represents all of the data that needs to be sent to the robot from the dashboard
@@ -183,7 +183,7 @@ ___
     - RebuiltAutoQueue
         - Creates a queue of auton commands that need to be executed
     - RebuiltSpotLibrary
-        - Gets spots on the field so that its validity can be checked during autonomous 
+        - Gets spots on the field so that its validity can be checked during autonomous
 - DeployAutoLibrary
     - Contains Records and methods that can be used to execute autonomous commands
 
